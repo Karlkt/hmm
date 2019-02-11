@@ -1,0 +1,103 @@
+<HTML>
+<HEAD><TITLE>One Time Pad</TITLE>
+<link REL="SHORTCUT ICON" HREF="/favicon.ico">
+<script language="JavaScript" src="js/otp.js"></script>
+<script language="JavaScript" src="js/util.js"></script>
+<script language="JavaScript"><!--
+
+function start_update()
+{
+   if (! document.getElementById)
+   {
+      alert('Sorry, you need a newer browser.');
+      return;
+   }
+
+   if ((! document.OneTimePad_Loaded) || (! document.Util_Loaded) ||
+       (! document.getElementById('output')))
+   {
+      window.setTimeout('start_update()', 100);
+      return;
+   }
+   upd();
+}
+
+
+function upd()
+{
+   if (IsUnchanged(document.encoder.text) *
+       IsUnchanged(document.encoder.pad) *
+       IsUnchanged(document.encoder.encdec))
+   {
+      window.setTimeout('upd()', 100);
+      return;
+   }
+   
+   ResizeTextArea(document.encoder.text);
+   ResizeTextArea(document.encoder.pad);
+
+   var e = document.getElementById('output');
+   
+   if (document.encoder.text.value != '' && document.encoder.pad.value != '')
+   {
+      e.innerHTML = SwapSpaces(HTMLEscape(OneTimePad(document.encoder.encdec.value * 1, 
+         document.encoder.text.value, document.encoder.pad.value)));
+   }
+   else
+   {
+      e.innerHTML = 'Type in a message and a pad to see the results.';
+   }
+   
+   window.setTimeout('upd()', 100);
+}
+
+window.setTimeout('start_update()', 100);
+
+// --></script>
+<link rel="stylesheet" type="text/css" href="/inc/css/base.css">
+<link rel="stylesheet" type="text/css" media="screen,projection" href="/inc/css/valentine.css">
+<link rel="stylesheet" type="text/css" media="print" href="/inc/css/print.css">
+<script src="/inc/js/site.js?1" type="text/javascript"></script>
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%">
+<tr><Td valign=top>
+<div class="r_header">One Time Pad</div>
+
+<table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td valign=top width="99%"><div class="r_main">
+
+<form name="encoder" method=post action="#" onsubmit="return false;">
+<p><select name="encdec">
+   <option value="1">Encrypt
+   <option value="-1">Decrypt
+</select>
+<p>Your message:<br><textarea name="text" rows="5" cols="80"></textarea></p>
+<p>The pad:<br><textarea name="pad" rows="5" cols="80"></textarea></p>
+</form>
+<table border=0 cellpadding=0 cellspacing=0 class="r_box" align="center" style="margin-top: 8px; margin-bottom: 8px;font-family: monospace">
+<tr>
+<td class="r_box">
+<span id='output'>MESSAGE</span>
+</td>
+</tr>
+</table>
+<div style="clear: both"></div>
+</div>
+</td><td valign=top>
+</td></tr></table>
+</td></tr>
+<tr><td valign=bottom>
+<div class="r_footbar">
+<table width="100%" cellpadding=0 cellspacing=0 border=0>
+<tr><td class="r_trivia" valign=top>
+Thats all folks</td>
+
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+</body>
+</html>
